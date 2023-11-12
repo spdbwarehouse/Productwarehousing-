@@ -3,7 +3,7 @@ package repository
 import (
 	"wareHouse/dao"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type UserRepository interface {

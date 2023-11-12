@@ -1,8 +1,9 @@
 package repository
 
 import (
-	"github.com/jinzhu/gorm"
 	"wareHouse/dao"
+
+	"gorm.io/gorm"
 )
 
 type ProductRepository interface {

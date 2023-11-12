@@ -6,11 +6,13 @@ import (
 	"os"
 	"os/signal"
 	"wareHouse/controllers"
+	"wareHouse/dao"
 	"wareHouse/repository"
 	"wareHouse/service"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 var (
@@ -26,10 +28,11 @@ func main() {
 	flag.Parse()
 	server := gin.Default()
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", *DB_USER, *DB_PASS, *DB_HOST, *DB_PORT, *DB_NAME)
-	db, err := gorm.Open(dsn)
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect to database")
 	}
+	db.AutoMigrate(&dao.User{}, &dao.Product{})
 	userrepo := repository.NewUserRepository(db)
 	userService := service.NewService(userrepo)
 	userController := controllers.NewController(userService)
@@ -49,8 +52,11 @@ func main() {
 	signal.Notify(killSignal, os.Interrupt)
 	<-killSignal
 	fmt.Println("Gracefully shutting down the server...")
-	err = db.Close()
+	sqldb, err := db.DB()
 	if err != nil {
+		fmt.Println("error closing the db connection", err)
+	}
+	if err := sqldb.Close(); err != nil {
 		fmt.Println("error closing the db connection", err)
 	}
 	fmt.Println("Server stopped")

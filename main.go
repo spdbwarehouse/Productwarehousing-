@@ -23,6 +23,7 @@ var (
 )
 
 func main() {
+	flag.Parse()
 	server := gin.Default()
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", *DB_USER, *DB_PASS, *DB_HOST, *DB_PORT, *DB_NAME)
 	db, err := gorm.Open(dsn)

@@ -48,4 +48,9 @@ func main() {
 	signal.Notify(killSignal, os.Interrupt)
 	<-killSignal
 	fmt.Println("Gracefully shutting down the server...")
+	err = db.Close()
+	if err != nil {
+		fmt.Println("error closing the db connection", err)
+	}
+	fmt.Println("Server stopped")
 }

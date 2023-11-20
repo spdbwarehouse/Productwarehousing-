@@ -15,5 +15,10 @@
 
 ******
 
+## To generate docker images that service requires such as maria db etc.., through make file.
+* (make -f Makefile docker) will pull mariadb instance from dockerhub and runs the service in the docker container.
+* for more info please check the docker compose file present in the same directory.
+
+
 ### TODO:
 need to automate the application as docker service 

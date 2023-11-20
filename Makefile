@@ -24,3 +24,6 @@ $(OUT_DIR)/$(BIN): $(SRC)
 
 clean:
 	@rm -rf $(OUT_DIR)
+
+docker:
+	docker compose -f docker-compose.yaml up -d
